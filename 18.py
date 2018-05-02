@@ -19,9 +19,10 @@
 
 
 class Solution(object):
-    def threeSum(self, nums):
+    def fourSum(self, nums, target):
         """
         :type nums: List[int]
+        :type target: int
         :rtype: List[List[int]]
         """
         self.res = []
@@ -29,17 +30,20 @@ class Solution(object):
         for i in range(0, len(nums)):
             if i > 0 and nums[i] == nums[i - 1]:
                 continue
-            self.twoSum(nums, i + 1, len(nums) - 1, nums[i])
+            for j in range(i + 1, len(nums)):
+                if j > i + 1 and nums[j] == nums[j - 1]:
+                    continue
+                self.twoSum(nums, j + 1, len(nums) - 1, -1 * (target - nums[i] - nums[j]), nums[i], nums[j])
         return self.res
 
-    def twoSum(self, nums, start, end, target):
+    def twoSum(self, nums, start, end, target, A, B):
         while start < end:
             if nums[start] + nums[end] + target < 0:
                 start += 1
             elif nums[start] + nums[end] + target > 0:
                 end -= 1
             else:
-                self.res.append([target, nums[start], nums[end]])
+                self.res.append([A, B, nums[start], nums[end]])
                 while start < end and nums[start] == nums[start+1]:
                     start += 1
                 while start < end and nums[end] == nums[end - 1]:
@@ -48,4 +52,4 @@ class Solution(object):
                 end -= 1
 
 
-print Solution().threeSum([-1, 0, 1, 2, -1, -4])
+print Solution().fourSum([1, 0, -1, 0, -2, 2], 0)
